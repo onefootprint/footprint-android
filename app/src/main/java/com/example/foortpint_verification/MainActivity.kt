@@ -15,17 +15,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val userData = FootprintUserData(email = "ahsan@email.com", phoneNumber = ("+1 (555) 555-0100"))
+        val userData = FootprintUserData(email = "test@email.com", phoneNumber = ("+1 (555) 555-0100"))
+        val onComplete: (String) -> Unit = {token: String ->
+            Log.d("VerificationResult", "The flow has completed. The validation token is $token")
+        }
+        val onClose: () -> Unit = {
+            Log.d("VerificationResult", "The flow has been closed prematuredly")
+        }
+        val onCancel: () -> Unit = {
+            Log.d("VerificationResult", "The flow has canceled")
+        }
+
+        val footprint = Footprint.getInstance()
+        footprint.setParams(
+            "com.example.foortpint_verification.MainActivity",
+            publicKey = "pb_test_aSzwnZecnXS4faoyhxrocW",
+            userData = userData,
+            onComplete = onComplete,
+            onCancel = onCancel,
+            onClose = onClose
+        )
 
         verificationButton = findViewById(R.id.verify_button)
         verificationButton.setOnClickListener {
-            val footprint = Footprint(publicKey = "pb_test_aSzwnZecnXS4faoyhxrocW", scheme = "com.test.verify", host = "kyc", userData = userData);
             footprint.startVerification(this@MainActivity);
         }
 
-        val applinkIntent = getIntent();
-        val action: String? = applinkIntent?.action
-        val data: Uri? = applinkIntent?.data
-        Log.d("TAG", "The data url with token is: "+data.toString())
+        val extras: Bundle? = intent.extras
+        Log.d("VerificationResult", "The bundle data: ${extras?.getString("verificationResult")}")
     }
 }

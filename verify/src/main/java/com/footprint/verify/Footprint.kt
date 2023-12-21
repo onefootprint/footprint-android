@@ -1,6 +1,7 @@
 package com.footprint.verify
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import kotlinx.serialization.encodeToString
@@ -12,63 +13,99 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okio.IOException
+import java.lang.Exception
+import kotlin.concurrent.Volatile
 
-class Footprint(
-    private val publicKey: String,
-    private val scheme: String,
-    private val host: String? = null,
-    private val options: FootprintOptions? = null,
-    private val userData: FootprintUserData? = null
-    ) {
-    private val client = OkHttpClient()
-    private val customTabsIntent = CustomTabsIntent.Builder().build()
-    private val sdkName = "footprint-android 1.0.0"
+class Footprint private constructor() {
+    private var destinationActivityName: String? = null
+    private var publicKey: String? = null
+    private var userData: FootprintUserData? = null
+    private var options: FootprintOptions? = null
+    private var launcherActivityActive = false
+    private var onCompleteCallback: ((validationToken: String) -> Unit)? = null
+    private var onCloseCallback: (() -> Unit)? = null
+    private var onCancelCallback: (() -> Unit)? = null
 
-    private fun getUrl(sdkToken: String): String {
-        val baseUrl = "https://id.onefootprint.com"
-        var hostVal: String = ""
-        if (this.host != null) hostVal = this.host
-        val redirectUrl = "${this.scheme}://$hostVal"
-        return "$baseUrl/?redirect_url=$redirectUrl#$sdkToken"
-    }
+    companion object {
+        @Volatile
+        private var instance: Footprint? = null
 
-    private fun getSdkRequestBody(): String {
-        val kind = "verify_v1";
-        val requestData = Data(publicKey = this.publicKey, userData = this.userData, options = this.options);
-        val requestBody = SdkRequestData(kind =kind, data = requestData)
-        val requestBodyString = Json.encodeToString(requestBody);
-        return requestBodyString
-    }
-
-    private fun getSdkRequest(sdkRequestBody: String): Request {
-        val endPoint = "https://api.onefootprint.com/org/sdk_args";
-        return Request.Builder()
-            .url(endPoint)
-            .header("x-fp-client-version", this.sdkName)
-            .header("Content-Type", "application/json")
-            .post(sdkRequestBody.toRequestBody())
-            .build();
-    }
-
-    fun startVerification(context: Context) {
-        val sdkRequestBody = getSdkRequestBody()
-        val sdkRequest = getSdkRequest(sdkRequestBody)
-
-        this.client.newCall(sdkRequest).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) {throw IOException("Unexpected code $response")}
-                    val responseBody = response.body!!.string();
-                    val responseObject = Json.decodeFromString<SdkTokenResponse>(responseBody)
-                    val sdkToken = responseObject.token
-                    val url = getUrl(sdkToken)
-                    customTabsIntent.launchUrl(context, Uri.parse(url))
+        fun getInstance(): Footprint {
+            if (instance == null) {
+                synchronized(this) {
+                    if (instance == null) {
+                        instance = Footprint()
+                    }
                 }
             }
-        })
+            return instance!!
+        }
+    }
+
+    fun setParams(
+        destinationActivityName: String,
+        publicKey: String,
+        userData: FootprintUserData? = null,
+        options: FootprintOptions? = null,
+        onComplete: ((validationToken: String) -> Unit)? = null,
+        onClose: (() -> Unit)? = null,
+        onCancel: (() -> Unit)? = null
+    ){
+        this.destinationActivityName = destinationActivityName
+        this.publicKey = publicKey
+        this.userData = userData
+        this.options = options
+        this.onCompleteCallback = onComplete
+        this.onCloseCallback = onClose
+        this.onCancelCallback = onCancel
+    }
+
+    internal fun getDestinationActivityName(): String? {
+        return this.destinationActivityName
+    }
+
+    internal fun getPublicKey(): String? {
+        return this.publicKey
+    }
+
+    internal fun getUserData(): FootprintUserData? {
+        return this.userData
+    }
+
+    internal fun getOptions(): FootprintOptions? {
+        return this.options
+    }
+
+    internal fun getOnCompleteCallback(): ((String) -> Unit)? {
+        return this.onCompleteCallback
+    }
+
+    internal fun getOnCloseCallback(): (() -> Unit)? {
+        return this.onCloseCallback
+    }
+
+    internal fun getOnCancelCallback(): (() -> Unit)? {
+        return this.onCancelCallback
+    }
+
+    internal fun setLauncherActivityActive(isActive: Boolean) {
+        this.launcherActivityActive = isActive
+    }
+
+    fun startVerification(context: Context){
+        if(launcherActivityActive) return // To avoid multiple clicks
+        val hasPublicKey = publicKey != null && publicKey!!.isNotEmpty()
+        val hasDestinationActivityName = destinationActivityName != null && destinationActivityName!!.isNotEmpty()
+
+        if(!hasPublicKey || !hasDestinationActivityName){
+            throw Exception(
+                "Missing params:"+
+                        (if(hasPublicKey) "" else " publicKey") +
+                        (if(hasDestinationActivityName) "" else " destinationActivityName")
+            )
+        }
+
+        val intent = Intent(context, LauncherActivity::class.java)
+        context.startActivity(intent)
     }
 }
