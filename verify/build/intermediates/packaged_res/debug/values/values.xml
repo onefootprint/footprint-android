@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="error">There was an error launching verification. Please try again.</string>
-    <string name="loading">Launching verification</string>
-</resources>

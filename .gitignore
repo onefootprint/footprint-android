@@ -9,8 +9,9 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
-/verify/build
+/footprint-android/build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+debug.log

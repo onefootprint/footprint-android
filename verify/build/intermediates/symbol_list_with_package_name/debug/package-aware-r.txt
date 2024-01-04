@@ -1,3 +1,0 @@
-com.footprint.verify
-string error
-string loading

@@ -1,2 +1,0 @@
-int string error 0x0
-int string loading 0x0
