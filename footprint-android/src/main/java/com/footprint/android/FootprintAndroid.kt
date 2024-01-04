@@ -73,7 +73,7 @@ class FootprintAndroid private constructor() {
     private fun getUrl(config: FootprintConfiguration, token: String): Uri? {
         try {
             val builder = Uri.parse(FootprintSdkMetadata.bifrostBaseUrl).buildUpon()
-            builder.appendQueryParameter("redirect_url", "com.footprint.android://")
+            builder.appendQueryParameter("redirect_url", "com.onefootprint.android://")
             val appearanceJson = config.appearance?.toJSON()
             appearanceJson?.let {
                 it["fontSrc"]?.let { fontSrc -> builder.appendQueryParameter("fontSrc", fontSrc) }
@@ -103,7 +103,7 @@ class FootprintAndroid private constructor() {
         }
     }
 
-    fun start() {
+    internal fun start() {
         // Prevents launching multiple verification flows at the same time
         if(hasActiveSession) return
         if(!validateConfig()) return
