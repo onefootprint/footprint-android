@@ -1,0 +1,35 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.footprint.verify" >
+4
+5    <uses-sdk android:minSdkVersion="21" />
+6
+7    <application>
+7-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:4:5-15:19
+8        <activity
+8-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:5:9-14:20
+9            android:name="com.footprint.verify.LauncherActivity"
+9-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:6:13-45
+10            android:exported="true" >
+10-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:7:13-36
+11            <intent-filter>
+11-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:8:13-13:29
+12                <action android:name="android.intent.action.VIEW" />
+12-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:9:17-69
+12-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:9:25-66
+13
+14                <category android:name="android.intent.category.DEFAULT" />
+14-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:10:17-76
+14-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:10:27-73
+15                <category android:name="android.intent.category.BROWSABLE" />
+15-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:11:17-78
+15-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:11:27-75
+16
+17                <data android:scheme="com.footprint" />
+17-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:12:17-56
+17-->/Users/ahsan/monorepo/mobile/apps/demo-kotlin/verify/src/main/AndroidManifest.xml:12:23-53
+18            </intent-filter>
+19        </activity>
+20    </application>
+21
+22</manifest>
