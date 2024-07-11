@@ -13,7 +13,7 @@ import com.footprint.android.FootprintConfiguration
 import com.footprint.android.FootprintL10n
 import com.footprint.android.FootprintOptions
 import com.footprint.android.FootprintSupportedLocale
-import com.footprint.android.FootprintUserData
+import com.footprint.android.FootprintBootstrapData
 
 class MainActivity : AppCompatActivity() {
 
