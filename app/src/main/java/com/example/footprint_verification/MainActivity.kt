@@ -7,7 +7,6 @@ import android.widget.Button
 import com.footprint.android.FootprintAndroid
 import com.footprint.android.FootprintAppearance
 import com.footprint.android.FootprintAppearanceRules
-import com.footprint.android.FootprintAppearanceTheme
 import com.footprint.android.FootprintAppearanceVariables
 import com.footprint.android.FootprintConfiguration
 import com.footprint.android.FootprintL10n
