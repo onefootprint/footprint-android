@@ -4,6 +4,8 @@ import FootprintErrorManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import java.lang.Exception
 
@@ -75,8 +77,12 @@ class FootprintAndroid private constructor() {
             val builder = Uri.parse(FootprintSdkMetadata.bifrostBaseUrl).buildUpon()
             builder.appendQueryParameter("redirect_url", "com.onefootprint.android://")
             val appearanceJson = config.appearance?.toJSON()
+            val language =config.l10n?.language
+            language?.let {
+                builder.appendQueryParameter("lng", Json.encodeToString(it).replace("\"", ""))
+            }
             appearanceJson?.let {
-                it["fontSrc"]?.let { fontSrc -> builder.appendQueryParameter("fontSrc", fontSrc) }
+                it["fontSrc"]?.let { fontSrc -> builder.appendQueryParameter("font_src", fontSrc) }
                 it["variant"]?.let { variant -> builder.appendQueryParameter("variant", variant) }
                 it["variables"]?.let { variables -> builder.appendQueryParameter("variables", variables) }
                 it["rules"]?.let { rules -> builder.appendQueryParameter("rules", rules) }
