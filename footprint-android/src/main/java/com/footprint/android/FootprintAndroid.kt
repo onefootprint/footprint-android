@@ -1,6 +1,6 @@
 package com.footprint.android
 
-import FootprintErrorManager
+import FootprintAndroidErrorManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -24,7 +24,7 @@ internal object FootprintSdkMetadata {
 class FootprintAndroid private constructor() {
     private var config: FootprintConfiguration? = null
     private var context: Context? = null
-    private var errorManager: FootprintErrorManager? = null
+    private var errorManager: FootprintAndroidErrorManager? = null
     private var sdkArgsManager: FootprintSdkArgsManager? = null
     private var hasActiveSession = false
     companion object {
@@ -34,7 +34,7 @@ class FootprintAndroid private constructor() {
             instance.apply {
                 this.config = config
                 this.context = context
-                this.errorManager = FootprintErrorManager(config)
+                this.errorManager = FootprintAndroidErrorManager(config)
                 this.sdkArgsManager = FootprintSdkArgsManager(config)
             }.start()
         }
@@ -44,7 +44,7 @@ class FootprintAndroid private constructor() {
         return this.config
     }
 
-    internal fun getErrorManager(): FootprintErrorManager? {
+    internal fun getErrorManager(): FootprintAndroidErrorManager? {
         return this.errorManager
     }
 

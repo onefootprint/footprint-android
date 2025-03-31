@@ -25,7 +25,7 @@ internal data class FootprintSdkTelemetry(
     @SerialName("session_id") val sessionId: String? = null,
 )
 
-class FootprintErrorManager(private val configuration: FootprintConfiguration) {
+class FootprintAndroidErrorManager(private val configuration: FootprintConfiguration) {
     private val debugMode = false // Enable this for local development
 
     private fun getErrorMsg(error: String): String {
