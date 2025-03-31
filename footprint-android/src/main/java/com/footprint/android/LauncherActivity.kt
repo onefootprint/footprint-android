@@ -1,5 +1,5 @@
 package com.footprint.android
-import FootprintErrorManager
+import FootprintAndroidErrorManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,7 +20,7 @@ internal class LauncherActivity : AppCompatActivity() {
     private var appPaused = false
     private var sdkArgsManager: FootprintSdkArgsManager? = null
     private var config: FootprintConfiguration? = null
-    private var errorManager: FootprintErrorManager? = null
+    private var errorManager: FootprintAndroidErrorManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
