@@ -1,0 +1,1 @@
+> ⚠️ **THIS SDK IS NOT MAINTAINED ANYMORE. PLEASE USE [THIS SDK FROM MAVEN CENTRAL](https://central.sonatype.com/artifact/com.onefootprint.native_onboarding_components/onboarding_components-android) INSTEAD.**
